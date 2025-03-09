@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -23,6 +24,8 @@ func main() {
 			os.Exit(1)
 		}
 
+		supportedCommands := []string{"echo", "type", "exit"}
+
 		// Display the message once received
 		length := len(command) - 1 // Remove the newline character
 		if command[:length] == "exit 0" {
@@ -32,8 +35,20 @@ func main() {
 			text := command[:length][4:]
 			if text == "" {
 				fmt.Println("Error: you must provide a string to echo")
+			} else {
+				fmt.Println(strings.TrimSpace(text))
 			}
-			fmt.Println(strings.TrimSpace(text))
+		} else if strings.Contains(command[:length], "type") {
+			text := command[:length][4:]
+			if text == "" {
+				fmt.Println("Error: you must provide a command")
+			} else {
+				if slices.Contains(supportedCommands, text) {
+					fmt.Println(text + " is a supported command")
+				} else {
+					fmt.Println(text + ": not found")
+				}
+			}
 		} else {
 			fmt.Println(command[:length] + ": command not found")
 		}
