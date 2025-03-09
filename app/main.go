@@ -24,6 +24,7 @@ func main() {
 			os.Exit(1)
 		}
 
+		// List of supported commands so far
 		supportedCommands := []string{"echo", "type", "exit"}
 
 		// Display the message once received
@@ -31,15 +32,19 @@ func main() {
 		if command[:length] == "exit 0" {
 			os.Exit(0)
 		}
-		if strings.Contains(command[:length], "echo") {
-			text := command[:length][4:]
+		commandToArr := strings.Split(command[:length], " ")
+		mainCommand := commandToArr[0]
+		args := commandToArr[1:]
+
+		if strings.Contains(mainCommand, "echo") {
+			text := strings.Join(args, " ")
 			if text == "" {
 				fmt.Println("Error: you must provide a string to echo")
 			} else {
 				fmt.Println(strings.TrimSpace(text))
 			}
-		} else if strings.Contains(command[:length], "type") {
-			text := command[:length][4:]
+		} else if strings.Contains(mainCommand, "type") {
+			text := args[0]
 			if text == "" {
 				fmt.Println("Error: you must provide a command")
 			} else {
@@ -50,7 +55,7 @@ func main() {
 				}
 			}
 		} else {
-			fmt.Println(command[:length] + ": command not found")
+			fmt.Println(mainCommand + ": command not found")
 		}
 	}
 }
