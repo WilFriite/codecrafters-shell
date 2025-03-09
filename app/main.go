@@ -24,6 +24,9 @@ func main() {
 
 		// Display the message once received
 		length := len(command) - 1 // Remove the newline character
+		if command[:length] == "exit 0" {
+			os.Exit(0)
+		}
 		fmt.Println(command[:length] + ": command not found")
 	}
 }
