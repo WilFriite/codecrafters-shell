@@ -44,6 +44,7 @@ func main() {
 				fmt.Println("Error: you must provide a command")
 				continue
 			}
+
 			if isShellBuiltin(text) {
 				fmt.Println(text + " is a shell builtin")
 			} else if path, err := exec.LookPath(text); err == nil {
@@ -52,8 +53,15 @@ func main() {
 				fmt.Println(text + ": not found")
 			}
 		} else {
-			fmt.Println(mainCommand + ": command not found")
+			cmd := exec.Command(mainCommand, args...)
+			err := cmd.Start()
+			if err != nil {
+				fmt.Println(mainCommand + ": command not found")
+			}
 		}
+		//else {
+		//	fmt.Println(mainCommand + ": command not found")
+		//}
 	}
 }
 
