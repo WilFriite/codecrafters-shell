@@ -50,3 +50,11 @@ func PwdCommand() {
 	}
 	fmt.Println(dir)
 }
+
+func CdCommand(args []string) {
+	dir := args[0]
+	err := os.Chdir(dir)
+	if err != nil {
+		fmt.Println(dir + ": No such file or directory")
+	}
+}

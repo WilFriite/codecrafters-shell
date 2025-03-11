@@ -40,6 +40,8 @@ func main() {
 		case "pwd":
 			PwdCommand()
 			break
+		case "cd":
+			CdCommand(args)
 		case "type":
 			TypeCommand(args)
 			break
