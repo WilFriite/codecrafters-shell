@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -41,13 +40,14 @@ func main() {
 			TypeCommand(args)
 			break
 		default:
-			cmd := exec.Command(mainCommand, args...)
-			stdout, err := cmd.Output()
-			if err != nil {
-				fmt.Println(mainCommand + ": command not found")
-			}
-			fmt.Println(string(stdout))
-			break
+			//cmd := exec.Command(mainCommand, args...)
+			//stdout, err := cmd.Output()
+			//if err != nil {
+			//	fmt.Println(mainCommand + ": command not found")
+			//}
+			//fmt.Print(string(stdout))
+			//break
+			RunExternalProgram(mainCommand, args)
 		}
 	}
 }

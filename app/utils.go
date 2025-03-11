@@ -46,7 +46,7 @@ func RunExternalProgram(mainCommand string, args []string) {
 	cmd := exec.Command(mainCommand, args...)
 	stdout, err := cmd.Output()
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Print(err.Error())
 	}
 	fmt.Print(string(stdout))
 }
