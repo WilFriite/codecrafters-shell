@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"slices"
 	"strings"
@@ -42,11 +43,10 @@ func TypeCommand(args []string) {
 	}
 }
 
-func RunExternalProgram(mainCommand string, args []string) {
-	cmd := exec.Command(mainCommand, args...)
-	stdout, err := cmd.Output()
+func PwdCommand() {
+	dir, err := os.Getwd()
 	if err != nil {
-		fmt.Print(err.Error())
+		fmt.Println(err)
 	}
-	fmt.Print(string(stdout))
+	fmt.Println(dir)
 }
