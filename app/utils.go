@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func isShellBuiltin(text string) bool {
+func IsSupported(text string) bool {
 	// List of supported commands so far
-	supportedCommands := []string{"echo", "type", "exit", "pwd"}
-	return slices.Contains(supportedCommands, text)
+
+	return slices.Contains(SupportedCommands, text)
 }
 
 func EchoCommand(args []string) string {
@@ -34,7 +34,7 @@ func TypeCommand(args []string) {
 		return
 	}
 
-	if isShellBuiltin(text) {
+	if IsSupported(text) {
 		fmt.Println(text + " is a shell builtin")
 	} else if path, err := exec.LookPath(text); err == nil {
 		fmt.Println(text + " is " + path)
