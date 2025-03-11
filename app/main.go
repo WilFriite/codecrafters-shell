@@ -36,8 +36,10 @@ func main() {
 		switch mainCommand {
 		case "echo":
 			EchoCommand(args)
+			break
 		case "type":
 			TypeCommand(args)
+			break
 		default:
 			cmd := exec.Command(mainCommand, args...)
 			stdout, err := cmd.Output()
@@ -45,7 +47,7 @@ func main() {
 				fmt.Println(mainCommand + ": command not found")
 			}
 			fmt.Println(string(stdout))
-
+			break
 		}
 	}
 }
