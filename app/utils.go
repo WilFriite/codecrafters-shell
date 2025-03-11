@@ -10,7 +10,7 @@ import (
 
 func isShellBuiltin(text string) bool {
 	// List of supported commands so far
-	supportedCommands := []string{"echo", "type", "exit"}
+	supportedCommands := []string{"echo", "type", "exit", "pwd"}
 	return slices.Contains(supportedCommands, text)
 }
 
