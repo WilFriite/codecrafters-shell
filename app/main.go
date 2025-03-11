@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"slices"
 	"strings"
 )
 
@@ -34,50 +33,19 @@ func main() {
 		mainCommand := commandToArr[0]
 		args := commandToArr[1:]
 
-		if strings.Contains(mainCommand, "echo") {
-			echoText(args)
-			continue
-		}
-		if strings.Contains(mainCommand, "type") {
-			text := args[0]
-			if text == "" {
-				fmt.Println("Error: you must provide a command")
-				continue
-			}
-
-			if isShellBuiltin(text) {
-				fmt.Println(text + " is a shell builtin")
-			} else if path, err := exec.LookPath(text); err == nil {
-				fmt.Println(text + " is " + path)
-			} else {
-				fmt.Println(text + ": not found")
-			}
-		} else {
+		switch mainCommand {
+		case "echo":
+			EchoCommand(args)
+		case "type":
+			TypeCommand(args)
+		default:
 			cmd := exec.Command(mainCommand, args...)
 			stdout, err := cmd.Output()
 			if err != nil {
 				fmt.Println(mainCommand + ": command not found")
 			}
 			fmt.Println(string(stdout))
+
 		}
-		//else {
-		//	fmt.Println(mainCommand + ": command not found")
-		//}
 	}
-}
-
-func isShellBuiltin(text string) bool {
-	// List of supported commands so far
-	supportedCommands := []string{"echo", "type", "exit"}
-	return slices.Contains(supportedCommands, text)
-}
-
-func echoText(text []string) string {
-	formatted := strings.Join(text, " ")
-	if formatted == "" {
-		fmt.Println("Error: you must provide a string to echo")
-	} else {
-		fmt.Println(strings.TrimSpace(formatted))
-	}
-	return formatted
 }
