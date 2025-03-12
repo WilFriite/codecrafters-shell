@@ -8,18 +8,53 @@ import (
 	"strings"
 )
 
-func IsSupported(text string) bool {
-	// List of supported commands so far
+func hasBalancedQuotes(s string) bool {
+	inQuote := false
+	escaped := false
 
+	for _, r := range s {
+		if escaped {
+			escaped = false
+			continue
+		}
+
+		if r == '\\' {
+			escaped = true
+			continue
+		}
+
+		if r == '\'' {
+			inQuote = !inQuote
+		}
+	}
+
+	return !inQuote
+}
+
+func removeQuotes(s string) string {
+	var result strings.Builder
+
+	for _, r := range s {
+		if r != '\'' {
+			result.WriteRune(r)
+		}
+	}
+
+	return result.String()
+}
+
+func IsSupported(text string) bool {
 	return slices.Contains(SupportedCommands, text)
 }
 
 func EchoCommand(args []string) string {
 	formatted := strings.Join(args, " ")
+
 	if formatted == "" {
 		fmt.Println("Error: you must provide a string to echo")
 	} else {
-		fmt.Println(strings.TrimSpace(formatted))
+		processed := removeQuotes(formatted)
+		fmt.Println(strings.TrimSpace(processed))
 	}
 	return formatted
 }
