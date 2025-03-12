@@ -31,6 +31,16 @@ func hasBalancedQuotes(s string) bool {
 	return !inQuote
 }
 
+func deleteEmpty(s []string) []string {
+	var r []string
+	for _, str := range s {
+		if str != "" {
+			r = append(r, str)
+		}
+	}
+	return r
+}
+
 func removeQuotes(s string) string {
 	var result strings.Builder
 
@@ -48,7 +58,8 @@ func IsSupported(text string) bool {
 }
 
 func EchoCommand(args []string) string {
-	formatted := strings.Join(args, " ")
+	trimmed := deleteEmpty(args)
+	formatted := strings.Join(trimmed, " ")
 
 	if formatted == "" {
 		fmt.Println("Error: you must provide a string to echo")
