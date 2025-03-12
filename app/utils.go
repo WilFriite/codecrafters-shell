@@ -53,8 +53,14 @@ func PwdCommand() {
 
 func CdCommand(args []string) {
 	dir := args[0]
-	err := os.Chdir(dir)
+	var targetDir string
+	if dir != "~" {
+		targetDir = dir
+	} else {
+		targetDir = os.Getenv("HOME")
+	}
+	err := os.Chdir(targetDir)
 	if err != nil {
-		fmt.Println(dir + ": No such file or directory")
+		fmt.Println(dir+": No such file or directory", err)
 	}
 }
