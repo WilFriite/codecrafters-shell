@@ -61,6 +61,6 @@ func CdCommand(args []string) {
 	}
 	err := os.Chdir(targetDir)
 	if err != nil {
-		fmt.Println(dir+": No such file or directory", err)
+		fmt.Println(dir + ": No such file or directory")
 	}
 }
