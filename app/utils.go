@@ -94,7 +94,7 @@ func EchoCommand(args []string) {
 	formattedArgs := strings.ReplaceAll(strings.Join(quotedArgs, ""), "\"\"", " ")
 	formattedArgs = strings.TrimSpace(formattedArgs)
 	//for _, arg := range args {
-	fmt.Println(quotedArgs)
+	// fmt.Println(quotedArgs)
 	fmt.Println(formattedArgs)
 	//}
 	//trimmed := deleteEmpty(args)
