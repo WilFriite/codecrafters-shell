@@ -57,17 +57,56 @@ func IsSupported(text string) bool {
 	return slices.Contains(SupportedCommands, text)
 }
 
-func EchoCommand(args []string) string {
-	trimmed := deleteEmpty(args)
-	formatted := strings.Join(trimmed, " ")
+/*
+*
+args are an array of strings. They can be formatted as:
+- echo hello world
+- echo 'hello world'
+- echo 'hello' 'world'
+Inside the same argument, single quotes are allowed, but they must be balanced. We must also keep spaces around each word of the arg.
+But between args, we must remove them.
+Examples :
+- echo hello world -> hello world
+- echo 'hello world' -> hello world
+- echo 'hello     world' 'test”script' -> "hello     world testscript"
+*/
+func EchoCommand(args []string) {
+	var quotedArgs []string
 
-	if formatted == "" {
-		fmt.Println("Error: you must provide a string to echo")
-	} else {
-		processed := removeQuotes(formatted)
-		fmt.Println(strings.TrimSpace(processed))
+	for key, arg := range args {
+		var trimmed string
+		isOnExtremity := key == len(args) || key == 0
+		if arg == "" {
+			trimmed = ""
+		} else {
+			trimmed = strings.TrimSpace(arg)
+		}
+		noQuotes := removeQuotes(trimmed)
+		if trimmed == "" {
+			if isOnExtremity {
+				return
+			}
+			quotedArgs = append(quotedArgs, fmt.Sprintf("%q", noQuotes))
+		} else {
+			quotedArgs = append(quotedArgs, fmt.Sprintf("%q", noQuotes))
+		}
 	}
-	return formatted
+	formattedArgs := strings.ReplaceAll(strings.Join(quotedArgs, ""), "\"\"", " ")
+	formattedArgs = strings.TrimSpace(formattedArgs)
+	//for _, arg := range args {
+	fmt.Println(quotedArgs)
+	fmt.Println(formattedArgs)
+	//}
+	//trimmed := deleteEmpty(args)
+	//formatted := strings.Join(trimmed, "")
+	//
+	//if formatted == "" {
+	//	fmt.Println("Error: you must provide a string to echo")
+	//} else {
+	//	processed := removeQuotes(formatted)
+	//	fmt.Println(strings.TrimSpace(processed))
+	//}
+	//return formatted
 }
 
 func TypeCommand(args []string) {
