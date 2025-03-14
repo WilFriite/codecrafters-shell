@@ -71,43 +71,23 @@ Examples :
 - echo 'hello     world' 'test”script' -> "hello     world testscript"
 */
 func EchoCommand(args []string) {
-	var quotedArgs []string
+	if len(args) == 0 {
 
-	for key, arg := range args {
-		var trimmed string
-		isOnExtremity := key == len(args) || key == 0
-		if arg == "" {
-			trimmed = ""
-		} else {
-			trimmed = strings.TrimSpace(arg)
-		}
-		noQuotes := removeQuotes(trimmed)
-		if trimmed == "" {
-			if isOnExtremity {
-				return
-			}
-			quotedArgs = append(quotedArgs, fmt.Sprintf("%q", noQuotes))
-		} else {
-			quotedArgs = append(quotedArgs, fmt.Sprintf("%q", noQuotes))
-		}
+		fmt.Fprintln(os.Stdout)
+
+		// return nil
+
 	}
-	formattedArgs := strings.ReplaceAll(strings.Join(quotedArgs, ""), "\"\"", " ")
-	formattedArgs = strings.TrimSpace(formattedArgs)
-	formattedArgs = strings.ReplaceAll(formattedArgs, "\"", "")
-	//for _, arg := range args {
-	// fmt.Println(quotedArgs)
-	fmt.Println(formattedArgs)
-	//}
-	//trimmed := deleteEmpty(args)
-	//formatted := strings.Join(trimmed, "")
-	//
-	//if formatted == "" {
-	//	fmt.Println("Error: you must provide a string to echo")
-	//} else {
-	//	processed := removeQuotes(formatted)
-	//	fmt.Println(strings.TrimSpace(processed))
-	//}
-	//return formatted
+
+	for i := 0; i < len(args)-1; i++ {
+
+		fmt.Fprintf(os.Stdout, "%s ", args[i])
+
+	}
+
+	fmt.Fprintln(os.Stdout, args[len(args)-1])
+
+	// return nil
 }
 
 func TypeCommand(args []string) {

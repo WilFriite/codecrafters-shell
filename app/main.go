@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
 )
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
@@ -29,9 +28,16 @@ func main() {
 		if command[:length] == "exit 0" {
 			os.Exit(0)
 		}
-		commandToArr := strings.Split(command[:length], " ")
-		mainCommand := commandToArr[0]
-		args := commandToArr[1:]
+
+		// mainCommand, args := ParseCommand(command[:length])
+		parsed, err := ParseShellWords(command[:length])
+
+		if err != nil {
+			fmt.Println("Error parsing command: ", err)
+			continue
+		}
+		mainCommand := parsed[0]
+		args := parsed[1:]
 
 		switch mainCommand {
 		case "echo":
