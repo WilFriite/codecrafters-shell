@@ -30,14 +30,12 @@ func main() {
 		}
 
 		// mainCommand, args := ParseCommand(command[:length])
-		parsed, err := ParseShellWords(command[:length])
+		mainCommand, args, err := ParseShellWords(command[:length])
 
 		if err != nil {
 			fmt.Println("Error parsing command: ", err)
 			continue
 		}
-		mainCommand := parsed[0]
-		args := parsed[1:]
 
 		switch mainCommand {
 		case "echo":

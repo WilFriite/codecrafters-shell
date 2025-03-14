@@ -2,22 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/mattn/go-shellwords"
 	"strings"
 	"unicode"
 )
 
-func ParseCommand(s string) (string, []string) {
-	p := shellwords.NewParser()
-
-	p.ParseBacktick = true
-
-	splits, _ := p.Parse(s)
-
-	return splits[0], splits[1:]
-}
-
-func ParseShellWords(line string) ([]string, error) {
+func ParseShellWords(line string) (string, []string, error) {
 	var words []string
 	var word strings.Builder
 
@@ -74,7 +63,7 @@ func ParseShellWords(line string) ([]string, error) {
 
 	// Vérifier si nous avons terminé dans un état valide
 	if state != "normal" {
-		return nil, fmt.Errorf("guillemets non fermés")
+		return "", nil, fmt.Errorf("guillemets non fermés")
 	}
 
 	// Ajouter le dernier mot s'il existe
@@ -82,5 +71,5 @@ func ParseShellWords(line string) ([]string, error) {
 		words = append(words, word.String())
 	}
 
-	return words, nil
+	return words[0], words[1:], nil
 }
