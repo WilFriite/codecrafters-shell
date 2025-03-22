@@ -31,9 +31,11 @@ func ParseShellWords(line string) (string, []string, error) {
 		}
 
 		// Vérifier le caractère d'échappement
-		if char == '\\' && state != "inQuote" {
-			escapeNext = true
-			continue
+		if char == '\\' {
+			if state != SingleQuote && state != DoubleQuote {
+				escapeNext = true
+				continue
+			}
 		}
 
 		// Traitement selon l'état actuel
