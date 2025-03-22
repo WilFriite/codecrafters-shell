@@ -6,11 +6,19 @@ import (
 	"unicode"
 )
 
+type ParsingState string
+
+const ( // États possibles: normal, inQuote, inDoubleQuote
+	Normal      ParsingState = "normal"
+	SingleQuote ParsingState = "singleQuote"
+	DoubleQuote ParsingState = "doubleQuote"
+)
+
 func ParseShellWords(line string) (string, []string, error) {
 	var words []string
 	var word strings.Builder
 
-	state := "normal"   // États possibles: normal, inQuote, inDoubleQuote
+	var state = Normal
 	escapeNext := false // Indique si le prochain caractère doit être échappé
 
 	// Parcourir la chaîne caractère par caractère
@@ -30,11 +38,11 @@ func ParseShellWords(line string) (string, []string, error) {
 
 		// Traitement selon l'état actuel
 		switch state {
-		case "normal":
+		case Normal:
 			if char == '"' {
-				state = "inDoubleQuote"
+				state = DoubleQuote
 			} else if char == '\'' {
-				state = "inQuote"
+				state = SingleQuote
 			} else if unicode.IsSpace(char) {
 				// Fin d'un mot
 				if word.Len() > 0 {
@@ -45,14 +53,14 @@ func ParseShellWords(line string) (string, []string, error) {
 				word.WriteRune(char)
 			}
 
-		case "inQuote":
+		case SingleQuote:
 			if char == '\'' {
-				state = "normal"
+				state = Normal
 			} else {
 				word.WriteRune(char)
 			}
 
-		case "inDoubleQuote":
+		case DoubleQuote:
 			if char == '"' {
 				state = "normal"
 			} else {
@@ -62,7 +70,7 @@ func ParseShellWords(line string) (string, []string, error) {
 	}
 
 	// Vérifier si nous avons terminé dans un état valide
-	if state != "normal" {
+	if state != Normal {
 		return "", nil, fmt.Errorf("guillemets non fermés")
 	}
 
